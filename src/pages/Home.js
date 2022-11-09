@@ -1,8 +1,31 @@
 import PropTypes from 'prop-types';
-
+import { useEffect, useState } from 'react';
+import { getPosts } from '../api';
+import { Loader } from '../components';
 import styles from '../styles/home.module.css';
+import { Comment } from '../components';
 
-const Home = ({ posts }) => {
+const Home = () => {
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchposts = async () => {
+      const response = await getPosts();
+
+      if (response.success) {
+        setPosts(response.data.posts);
+      }
+      setLoading(false);
+    };
+    fetchposts();
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+  console.log(posts);
+
   return (
     <div className={styles.postsList}>
       {posts.map((post) => (
@@ -39,17 +62,10 @@ const Home = ({ posts }) => {
               <input placeholder="Start typing a comment" />
             </div>
 
-            <div className={styles.postCommentsList}>
-              <div className={styles.postCommentsItem}>
-                <div className={styles.postCommentHeader}>
-                  <span className={styles.postCommentAuthor}>Bill</span>
-                  <span className={styles.postCommentTime}>a minute ago</span>
-                  <span className={styles.postCommentLikes}>22</span>
-                </div>
-
-                <div className={styles.postCommentContent}>Random comment</div>
-              </div>
-            </div>
+            <div className={styles.postCommentsList}></div>
+            {post.comments.map((comment) => (
+              <Comment comment={comment} />
+            ))}
           </div>
         </div>
       ))}

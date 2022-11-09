@@ -1,31 +1,27 @@
-import { useEffect, useState } from 'react';
-import { getPosts } from '../api';
 import { Navbar, Loader } from './';
-import Home from '../pages/Home';
+import { Home, Login } from '../pages';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { NotificationContainer } from 'react-notifications';
+import { useAuth } from '../hooks';
+import 'react-notifications/lib/notifications.css';
+
 function App() {
-  const [posts, setPost] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const auth = useAuth();
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      const response = await getPosts();
-      console.log('response', response);
-
-      if (response.success) {
-        setPost(response.data.posts);
-      }
-      setLoading(false);
-    };
-    fetchPost();
-  }, []);
-
-  if (loading) {
+  if (auth.loading) {
     return <Loader />;
   }
+
   return (
     <div className="App">
-      <Navbar />
-      <Home posts={posts} />
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route exact path="/" element={<Home posts={[]} />} />
+          <Route exact path="/login" element={<Login />} />
+        </Routes>
+      </BrowserRouter>
+      <NotificationContainer />
     </div>
   );
 }
