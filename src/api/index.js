@@ -1,5 +1,5 @@
 import { API_URLS, LOCALSTORAGE_TOKEN_KEY } from '../utils';
-
+import { getfromBody } from '../utils';
 const customFetch = async (url, { body, ...customConfig }) => {
   const token = window.localStorage.getItem(LOCALSTORAGE_TOKEN_KEY);
 
@@ -20,7 +20,7 @@ const customFetch = async (url, { body, ...customConfig }) => {
   };
 
   if (body) {
-    config.body = JSON.stringify(body);
+    config.body = getfromBody(body);
   }
 
   try {
@@ -58,6 +58,6 @@ export const login = (email, password) => {
 export const register = async (name, email, password, confirmPassword) => {
   return customFetch(API_URLS.signup(), {
     method: 'POST',
-    body: { name, email, password, confirmPassword },
+    body: { name, email, password, confirm_password: confirmPassword },
   });
 };

@@ -17,15 +17,13 @@ const Signup = () => {
     e.preventDefault();
     setSigningUp(true);
 
-    let error = false;
-
     if (!name || !email || !password || !confirmPassword) {
       NotificationManager.warning(
         'Please fill all the fields',
         'Empty field',
         2000
       );
-      error = true;
+      setSigningUp(false);
     }
     if (password !== confirmPassword) {
       NotificationManager.error(
@@ -33,19 +31,11 @@ const Signup = () => {
         'Password mismatch',
         2000
       );
-      error = true;
-    }
-    if (error) {
       setSigningUp(false);
     }
 
-    const response = await auth.signup(
-      name,
-      email,
-      password,
-      setConfirmPassword
-    );
-    console.log(response);
+    const response = await auth.signup(name, email, password, confirmPassword);
+
     if (response.success) {
       navigate('/login');
       setSigningUp(false);
@@ -56,6 +46,7 @@ const Signup = () => {
         2000
       );
     } else {
+      setSigningUp(false);
       return NotificationManager.error(
         response.message,
         'Registration Failed',

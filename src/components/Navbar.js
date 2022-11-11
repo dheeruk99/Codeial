@@ -1,6 +1,7 @@
 import styles from '../styles/navbar.module.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks';
+import { removeItemFromLocalStorage } from '../utils';
 
 const Navbar = () => {
   const auth = useAuth();
@@ -33,9 +34,7 @@ const Navbar = () => {
           <ul>
             {auth.user ? (
               <>
-                <li>
-                  <a href="/">Log out</a>
-                </li>
+                <li onClick={auth.logout}>logout</li>
               </>
             ) : (
               <>

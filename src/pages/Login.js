@@ -1,5 +1,5 @@
 import { useState } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import styles from '../styles/login.module.css';
 import { NotificationManager } from 'react-notifications';
 import { useAuth } from '../hooks';
@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
   const auth = useAuth();
+  const navigate = useNavigate();
   console.log(auth);
 
   const handleSubmit = async (e) => {
@@ -28,6 +29,7 @@ const Login = () => {
 
     if (response.success) {
       setLoggingIn(false);
+      navigate('/');
       NotificationManager.success(
         'Successfully Logged in',
         'Authorization success',
