@@ -34,7 +34,7 @@ const customFetch = async (url, { body, ...customConfig }) => {
     }
     throw new Error(data.message);
   } catch (error) {
-    console.error('error');
+    console.error('error', error);
     return {
       message: error.message,
       success: false,
@@ -52,5 +52,12 @@ export const login = (email, password) => {
   return customFetch(API_URLS.login(), {
     method: 'POST',
     body: { email, password },
+  });
+};
+
+export const register = async (name, email, password, confirmPassword) => {
+  return customFetch(API_URLS.signup(), {
+    method: 'POST',
+    body: { name, email, password, confirmPassword },
   });
 };
