@@ -1,5 +1,5 @@
 import { Navbar, Loader } from './';
-import { Home, Login, Signup } from '../pages';
+import { Home, Login, Settings, Signup } from '../pages';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { NotificationContainer } from 'react-notifications';
 import { useAuth } from '../hooks';
@@ -17,6 +17,7 @@ function App() {
       <BrowserRouter>
         <Navbar />
         <Routes>
+          <Route exact path="/settings" element={<Settings />} />
           <Route exact path="/" element={<Home posts={[]} />} />
           <Route exact path="/login" element={<Login />} />
           <Route exact path="/Register" element={<Signup />} />

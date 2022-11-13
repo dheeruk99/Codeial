@@ -10,7 +10,6 @@ const Login = () => {
   const [loggingIn, setLoggingIn] = useState(false);
   const auth = useAuth();
   const navigate = useNavigate();
-  console.log(auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

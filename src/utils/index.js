@@ -24,7 +24,7 @@ export const removeItemFromLocalStorage = (key) => {
   return localStorage.removeItem(key);
 };
 
-export const getfromBody = (params) => {
+export const getFormBody = (params) => {
   let formBody = [];
 
   for (let property in params) {

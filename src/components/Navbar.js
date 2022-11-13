@@ -1,7 +1,6 @@
 import styles from '../styles/navbar.module.css';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../hooks';
-import { removeItemFromLocalStorage } from '../utils';
 
 const Navbar = () => {
   const auth = useAuth();
@@ -19,13 +18,13 @@ const Navbar = () => {
       <div className={styles.rightNav}>
         {auth.user && (
           <div className={styles.user}>
-            <a href="/">
+            <Link to="/settings">
               <img
                 src="https://www.svgrepo.com/show/130468/user-picture.svg"
                 alt=""
                 className={styles.userDp}
               />
-            </a>
+            </Link>
             <span>{auth.user.name}</span>
           </div>
         )}

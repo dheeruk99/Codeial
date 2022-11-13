@@ -31,3 +31,7 @@ body {
     -webkit-transform: rotate(360deg);
   }
 }
+
+button {
+  margin-right: 15px;
+}
