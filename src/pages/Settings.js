@@ -2,7 +2,7 @@ import styles from '../styles/settings.module.css';
 import { useAuth } from '../hooks';
 import { useState } from 'react';
 import { NotificationManager } from 'react-notifications';
-import e from 'cors';
+
 const Settings = () => {
   const auth = useAuth();
   const [editMode, setEditMode] = useState(false);

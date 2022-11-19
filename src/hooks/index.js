@@ -24,13 +24,15 @@ export const useProvideAuth = () => {
       const user = jwt(userToken);
       setUser(user);
     }
+    
     setLoading(false);
+    
   }, []);
 
   const updateUser = async (userId, name, password, confirmPassword) => {
     const response = await editProfile(userId, name, password, confirmPassword);
 
-    console.log('Update user: ', response);
+    
     if (response.success) {
       setUser(response.data.user);
       setItemInLocalStorage(

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 import styles from '../styles/login.module.css';
 import { NotificationManager } from 'react-notifications';
 import { useAuth } from '../hooks';
@@ -40,6 +40,9 @@ const Login = () => {
     }
   };
 
+  if(auth.user){
+    return <Navigate to='/'/>;
+  }
   return (
     <div>
       <form className={styles.loginForm} onSubmit={handleSubmit}>

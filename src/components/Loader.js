@@ -1,5 +1,5 @@
 const Loader = () => {
-  return <div className="app-spinner"></div>;
+  return <div className="spinner"></div>;
 };
 
 export default Loader;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../hooks';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,Navigate} from 'react-router-dom';
 import { NotificationManager } from 'react-notifications';
 import styles from '../styles/login.module.css';
 
@@ -18,20 +18,20 @@ const Signup = () => {
     setSigningUp(true);
 
     if (!name || !email || !password || !confirmPassword) {
-      NotificationManager.warning(
+      setSigningUp(false);
+      return NotificationManager.warning(
         'Please fill all the fields',
         'Empty field',
         2000
       );
-      setSigningUp(false);
     }
     if (password !== confirmPassword) {
-      NotificationManager.error(
+      setSigningUp(false);
+      return NotificationManager.error(
         'Make sure password and confirm password matches',
         'Password mismatch',
         2000
       );
-      setSigningUp(false);
     }
 
     const response = await auth.signup(name, email, password, confirmPassword);
@@ -55,6 +55,9 @@ const Signup = () => {
     }
   };
 
+  if(auth.user){
+    return <Navigate to='/'/>;
+  }
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
       <span className={styles.loginSignupHeader}>Signup</span>
