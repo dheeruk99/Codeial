@@ -97,7 +97,7 @@ const Signup = () => {
           placeholder="Confirm password"
           type="password"
           required
-          values={password}
+          value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
       </div>

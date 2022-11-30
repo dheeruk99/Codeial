@@ -2,13 +2,14 @@ import styles from '../styles/settings.module.css';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks';
 import { useState, useEffect } from 'react';
-import { fetchUserProfile } from '../api';
+import { addFriend, fetchUserProfile,removeFriend } from '../api';
 import { NotificationManager } from 'react-notifications';
 import { Loader } from '../components';
 
 const UserProfile = () => {
   const [user, setUser] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [requestInProgress, setRequestInProgress] = useState(false);
   const { userId } = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
@@ -38,16 +39,50 @@ const UserProfile = () => {
   }
 
   const checkIfUserIsAFriend = () => {
-    const friends = auth.user.friendships;
-    console.log(auth.user);
-    console.log(user);
+    const friends = auth.user.friends;
     const friendIds = friends.map((friend) => friend.to_user._id);
     const index = friendIds.indexOf(userId);
 
     if (index !== -1) {
-      return false;
+      return true;
     }
     return false;
+  };
+
+  const handleRemoveFriendClick = async() => {
+      setRequestInProgress(true);
+      const response = await removeFriend(userId);
+      
+      if (response.success) {
+        const friendship = auth.user.friends.filter(
+          (friend) => friend.to_user._id === userId
+        );
+  
+        auth.updateUserFriends(false, friendship[0]);
+       NotificationManager.success('Friend removed successfully! ','Friends Updated',2000);
+        
+      } else {
+        NotificationManager.error(response.message,'Failed',2000);
+      }
+      setRequestInProgress(false);
+
+  };
+
+  const handleAddFriendClick = async () => {
+    setRequestInProgress(true);
+
+    const response = await addFriend(userId);
+
+    if (response.success) {
+      const { friendship } = response.data;
+      console.log(friendship)
+      
+      auth.updateUserFriends(true, friendship);
+      NotificationManager.success('Friend added successfully', 2000);
+    } else {
+      NotificationManager.error(response.message, 'Error', 2000);
+    }
+    setRequestInProgress(false);
   };
 
   return (
@@ -72,9 +107,15 @@ const UserProfile = () => {
 
       <div className={styles.btnGrp}>
         {checkIfUserIsAFriend() ? (
-          <button className={`button ${styles.saveBtn}`}>Remove friend</button>
+          <button className={`button ${styles.saveBtn}`} onClick={handleRemoveFriendClick}>{requestInProgress ? 'Removing friend...' : 'Remove friend'}</button>
         ) : (
-          <button className={`button ${styles.saveBtn}`}>Add friend</button>
+          <button
+            className={`button ${styles.saveBtn}`}
+            onClick={handleAddFriendClick}
+            disabled={requestInProgress}
+          >
+            {requestInProgress ? 'Adding friend...' : 'Add friend'}
+          </button>
         )}
       </div>
     </div>

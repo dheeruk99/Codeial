@@ -44,7 +44,6 @@ const Settings = () => {
       confirmPassword
     );
 
-    console.log('Settings Response', response);
     if (response.success) {
       setEditMode(false);
       setSavingForm(false);

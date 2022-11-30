@@ -17,7 +17,7 @@ const Login = () => {
 
     if (!email || !password) {
       setLoggingIn(false);
-      return NotificationManager.success(
+      return NotificationManager.error(
         'Please Enter both email and password',
         'Authentication failed',
         2000
