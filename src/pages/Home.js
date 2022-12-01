@@ -1,37 +1,24 @@
-import { useEffect, useState } from 'react';
-import { getPosts } from '../api';
-import { Loader } from '../components';
+
+import { CreatePost, Loader } from '../components';
 import styles from '../styles/home.module.css';
-import { Comment } from '../components';
+import { Comment,FriendsList } from '../components';
 import { Link } from 'react-router-dom';
-import FriendsList from '../components/FriendList';
-import { useAuth } from '../hooks';
+import { useAuth, usePosts } from '../hooks';
 
 const Home = () => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+ 
   const auth = useAuth();
+  const posts = usePosts();
 
-  useEffect(() => {
-    const fetchposts = async () => {
-      const response = await getPosts();
-
-      if (response.success) {
-        setPosts(response.data.posts);
-      }
-      setLoading(false);
-    };
-    fetchposts();
-  }, []);
-
-  if (loading) {
+  if (posts.loading) {
     return <Loader />;
   }
 
   return (
     <div className={styles.home}>
       <div className={styles.postsList}>
-        {posts.map((post) => (
+        <CreatePost/>
+        {posts.data.map((post) => (
           <div className={styles.postWrapper} key={`post-${post._id}`}>
             <div className={styles.postHeader}>
               <div className={styles.postAvatar}>
@@ -49,13 +36,15 @@ const Home = () => {
                   <span className={styles.postTime}>a minute ago </span>
                 </div>
               </div>
+              <div className={styles.postContent}>{post.content}</div>
+
               <div className={styles.postActions}>
                 <div className={styles.postLike}>
                   <img
                     src="https://www.svgrepo.com/show/198175/like.svg"
                     alt="likes-icon"
                   />
-                  <span>5</span>
+                  <span>{post.likes.length}</span>
                 </div>
 
                 <div className={styles.postCommentsIcon}>
@@ -63,7 +52,7 @@ const Home = () => {
                     src="https://www.svgrepo.com/show/379126/comment.svg"
                     alt="comments-icon"
                   />
-                  <span>2</span>
+                  <span>{post.comments.length}</span>
                 </div>
               </div>
               <div className={styles.postCommentBox}>
