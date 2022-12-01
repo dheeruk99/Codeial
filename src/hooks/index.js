@@ -22,7 +22,7 @@ export const useAuth = () => {
 export const useProvideAuth = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  console.log(user)
+  
   useEffect(() => {
     const getUser = async () => {
       const userToken = getItemFromLocalStorage(LOCALSTORAGE_TOKEN_KEY);
@@ -124,7 +124,7 @@ export const useProvideAuth = () => {
       
       setUser({
         ...user,
-        friend:newfriends
+        friends:newfriends
       });
   };
 

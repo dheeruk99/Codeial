@@ -75,7 +75,7 @@ const UserProfile = () => {
 
     if (response.success) {
       const { friendship } = response.data;
-      console.log(friendship)
+      
       
       auth.updateUserFriends(true, friendship);
       NotificationManager.success('Friend added successfully', 2000);
