@@ -3,13 +3,14 @@ import { useState } from 'react';
 import styles from '../styles/home.module.css';
 import { addPost } from '../api';
 import { NotificationManager } from 'react-notifications';
-import { usePosts } from '../hooks';
+import { useAuth, usePosts } from '../hooks';
 
 const CreatePost = () => {
   const [post, setPost] = useState('');
   const [addingPost, setAddingPost] = useState(false);
   const posts = usePosts();
-
+  const auth = useAuth();
+  
   const handleAddPostClick = async () => {
     setAddingPost(true);
   
@@ -25,7 +26,7 @@ const CreatePost = () => {
     setAddingPost(false);
   };
 
-  return (
+  return ( auth.user &&
     <div className={styles.createPost}>
       <textarea
         className={styles.addPost}
